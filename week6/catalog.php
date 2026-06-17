@@ -43,4 +43,8 @@ $result = mysqli_query($conn, $sql);
     </div>
 
 </body>
-</html>
+</html><div style="margin-bottom: 20px;">
+    <a href="add_product.php" style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">
+        + Add New Product
+    </a>
+</div>
