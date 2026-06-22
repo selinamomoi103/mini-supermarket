@@ -1,16 +1,17 @@
 <?php
 include('../week5/db_connect.php');
-$id = $_GET['id'];
 
-// Fetch current details
-$result = mysqli_query($conn, "SELECT * FROM products WHERE id=$id");
-$product = mysqli_fetch_assoc($result);
-
-if(isset($_POST['update'])) {
-    $name = $_POST['name'];
-    $price = $_POST['price'];
-    mysqli_query($conn, "UPDATE products SET name='$name', price='$price' WHERE id=$id");
-    header("Location: catalog.php"); // Redirect back to catalog
+// Only proceed if 'id' is present in the URL
+if(isset($_GET['id'])) {
+    $id = $_GET['id'];
+    
+    // Fetch current details
+    $result = mysqli_query($conn, "SELECT * FROM products WHERE id = $id");
+    $product = mysqli_fetch_assoc($result);
+} else {
+    // Redirect if no ID is found
+    header("Location: catalog.php");
+    exit();
 }
 ?>
 <form method="POST">

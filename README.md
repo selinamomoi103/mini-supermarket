@@ -23,3 +23,10 @@ This is a full-stack e-commerce web application developed as part of the BIT3208
 
 ---
 
+## Project Documentation
+
+### Database Structure
+![Database Structure](screenshots/structure.png)
+
+### Product Catalog Interface
+![Product Catalog](screenshots/Screenshot%202026-06-07%20124924.png)
