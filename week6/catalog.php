@@ -1,50 +1,60 @@
 <?php
+session_start();
+// Security guard
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../week7/login.php");
+    exit();
+}
 // Include your database connection
-include('../week4/db_connect.php'); 
+include('../week4/db_connect.php');
+// Fetch products
+$sql = "SELECT * FROM products";
+$result = mysqli_query($conn, $sql);
+?><form action="add_to_cart.php" method="post">
+    <input type="hidden" name="product_id" value="<?php echo $row['id']; ?>">
+    <button type="submit">Add to Cart</button>
+</form>// ... (keep your existing session and db connection code) ...
 
-// Fetch all products from the database
+// Fetch all products
 $sql = "SELECT * FROM products";
 $result = mysqli_query($conn, $sql);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Product Catalog</title>
-    <style>
-        .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .product-card { border: 1px solid #ccc; padding: 15px; border-radius: 8px; }
-    </style>
-</head>
 <body>
+    <nav>
+        <a href="../week6/catalog.php">Catalog</a> | 
+        <a href="cart.php">View Cart</a> | 
+        <a href="../week7/logout.php">Logout</a>
+    </nav>
 
     <h1>Our Mini Supermarket Catalog</h1>
-
-    <div class="product-grid">
-        <?php
-        // Check if products exist in the database and display them
-        if ($result && mysqli_num_rows($result) > 0) {
-            while($row = mysqli_fetch_assoc($result)) {
-                echo "<div class='product-card'>";
-                echo "<h3>" . htmlspecialchars($row['name']) . "</h3>";
-                echo "<p>Price: KES " . htmlspecialchars($row['price']) . "</p>";
-                
-                // CRUD Action Links: These send the unique product ID to your handler files
-                echo "<a href='edit_product.php?id=" . $row['id'] . "'>Edit</a> | ";
-                echo "<a href='delete_product.php?id=" . $row['id'] . "' onclick='return confirm(\"Are you sure you want to delete this product?\");'>Delete</a>";
-                
-                echo "</div>";
-            }
-        } else {
-            echo "<p>No products found in the database.</p>";
-        }
+    <?php
+    // Loop through each product row
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo "<div>";
+        echo "<h3>" . $row['name'] . "</h3>";
+        echo "<p>Price: KES " . $row['price'] . "</p>";
         ?>
-    </div>
-
+        <form action="add_to_cart.php" method="post">
+            <input type="hidden" name="product_id" value="<?php echo $row['id']; ?>">
+            <button type="submit">Add to Cart</button>
+        </form>
+        <?php
+        echo "</div><hr>";
+    }
+    ?>
 </body>
-</html><div style="margin-bottom: 20px;">
-    <a href="add_product.php" style="padding: 10px 20px; background-color: #28a745; color: white; text-decoration: none; border-radius: 5px;">
-        + Add New Product
-    </a>
-</div>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>...</head>
+<body>
+    <nav>
+        <a href="../week6/catalog.php">Catalog</a> | 
+        <a href="../week7/logout.php">Logout</a>
+    </nav>
+    ...
+</body>
+</html>
